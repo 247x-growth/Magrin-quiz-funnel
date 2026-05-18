@@ -95,9 +95,9 @@ export const QUESTIONS: QuizQuestion[] = [
     helper:
       "Chiudi gli occhi un secondo. La sensazione fisica precede sempre il pensiero. Non c'è una zona fissa: scegli quella che riconosci di più in questo periodo.",
     options: [
-      { id: "1a", label: "Plesso solare / diaframma", score: { "solar-plexus": 3 } },
-      { id: "1b", label: "Nella gola, come un nodo che non passa", score: { throat: 3 } },
-      { id: "1c", label: "Al centro del petto, una pressione", score: { heart: 3, "solar-plexus": 1 } },
+      { id: "1a", label: "Nella gola, come un nodo che non passa", score: { throat: 3 } },
+      { id: "1b", label: "Al centro del petto, una pressione", score: { heart: 3, "solar-plexus": 1 } },
+      { id: "1c", label: "Tra petto e stomaco, una stretta al diaframma", score: { "solar-plexus": 3 } },
       { id: "1d", label: "Allo stomaco, un peso che mi accompagna", score: { "solar-plexus": 3, navel: 1 } },
       { id: "1e", label: "Nella pancia, una vibrazione di fondo", score: { navel: 3 } },
       { id: "1f", label: "Più giù, una stanchezza che blocca", score: { pelvis: 3 } },
@@ -114,7 +114,7 @@ export const QUESTIONS: QuizQuestion[] = [
       { id: "2b", label: "Relazioni con partner, figli, genitori, familiari", score: { throat: 3 } },
       { id: "2c", label: "Una persona che mi ha ferito / una relazione", score: { heart: 3 } },
       { id: "2d", label: "Non sentirmi all'altezza / abbastanza / mancanza di autostima", score: { navel: 3 } },
-      { id: "2e", label: "Il giudizio degli altri / sentirmi non abbastanza", score: { navel: 3, throat: 1 } },
+      { id: "2e", label: "Il giudizio degli altri", score: { navel: 3, throat: 1 } },
       { id: "2f", label: "Nessun motivo apparente, torna e basta", score: { pelvis: 2, navel: 1 } },
     ],
   },
