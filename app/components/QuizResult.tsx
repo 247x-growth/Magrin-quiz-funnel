@@ -256,7 +256,7 @@ export default function QuizResult({ result, profile, leadName }: Props) {
                 href={stripeUrl}
                 className="cta-pulse group flex items-center justify-center gap-3 w-full bg-[#EA5D35] text-white font-bold text-lg md:text-2xl leading-tight px-6 md:px-10 py-5 md:py-7 rounded-xl transition-all hover:bg-[#FC7951] hover:translate-y-[-2px] text-center"
               >
-                <span className="text-balance">Inizia ORA il corso e diventa la migliore versione di te stesso</span>
+                <span className="text-balance">Inizia ORA a sciogliere il tuo loop</span>
                 <svg className="shrink-0 transition-transform group-hover:translate-x-1" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h14M13 5l7 7-7 7" />
                 </svg>
@@ -303,7 +303,7 @@ export default function QuizResult({ result, profile, leadName }: Props) {
             href={stripeUrl}
             className="cta-pulse flex items-center justify-center gap-2 w-full bg-[#EA5D35] text-white font-bold text-sm leading-tight px-4 py-3 active:bg-[#FC7951]"
           >
-            <span className="text-balance text-center">Inizia ORA il corso e diventa la migliore versione di te stesso</span>
+            <span className="text-balance text-center">Inizia ORA a sciogliere il tuo loop</span>
             <svg className="shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
               <path d="M5 12h14M13 5l7 7-7 7" />
             </svg>
