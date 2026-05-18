@@ -30,30 +30,29 @@ export default function QuizIntro({ onStart }: Props) {
 
           {/* H1 */}
           <h1 className="font-display text-[clamp(2.25rem,1rem+4.5vw,4.25rem)] leading-[1.05] tracking-tight">
-            Misura il tuo loop.<br />
-            <em className="text-[var(--accent)] font-bold not-italic">Scopri dove si annida.</em>
+            Misurare il tuo loop<br />
+            <em className="text-[var(--accent)] font-bold not-italic">è il primo passo per scioglierlo.</em>
           </h1>
 
-          {/* Subtitle */}
+          {/* Subtitle — call-out specifico + promise concreta */}
           <p className="text-[1.125rem] md:text-[1.25rem] text-[var(--ink-secondary)] leading-relaxed">
-            Il pensiero negativo è una <strong className="text-[var(--ink-deep)]">sensazione fisica</strong> precisa.
-            Otto domande per scoprire <strong className="text-[var(--accent)]">in quale punto del corpo</strong> il tuo loop si manifesta, e cosa serve per scioglierlo.
-            <span className="block mt-3 text-sm text-[var(--ink-tertiary)] italic">8 domande, 90 secondi.</span>
+            Se anche tu hai <strong className="text-[var(--ink-deep)]">pensieri negativi che continuano a tornare</strong> e ti tormentano, in 9 domande identifichi <strong className="text-[var(--accent)]">quanto è forte il tuo loop</strong> e la strategia per neutralizzarlo.
+            <span className="block mt-3 text-sm text-[var(--ink-tertiary)] italic">9 domande, 90 secondi.</span>
           </p>
 
           {/* Bullets */}
           <ul className="flex flex-col gap-2.5 utility-text text-[var(--ink-secondary)]">
             <li className="flex items-start gap-3">
               <span aria-hidden="true" className="mt-2 w-1.5 h-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent-glow)] shrink-0" />
-              <span>Diagnosi personalizzata sul tuo punto somatico specifico</span>
+              <span>Misuri l&apos;intensità del tuo loop su scala 1-10</span>
             </li>
             <li className="flex items-start gap-3">
               <span aria-hidden="true" className="mt-2 w-1.5 h-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent-glow)] shrink-0" />
-              <span>Mappa M.A.G.R.I.N. del tuo loop, quale tappa è critica per te</span>
+              <span>Identifichi l&apos;area di vita più impattata</span>
             </li>
             <li className="flex items-start gap-3">
               <span aria-hidden="true" className="mt-2 w-1.5 h-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent-glow)] shrink-0" />
-              <span>Risultato istantaneo, niente attesa, niente call commerciali</span>
+              <span>Ricevi la strategia col Metodo M.A.G.R.I.N.</span>
             </li>
           </ul>
 
@@ -64,7 +63,7 @@ export default function QuizIntro({ onStart }: Props) {
               onClick={onStart}
               className="inline-flex items-center justify-center gap-3 bg-[var(--accent)] text-[var(--accent-fg)] font-semibold text-base md:text-lg px-7 md:px-9 py-4 md:py-5 rounded-md transition-all hover:bg-[var(--accent-hover)] hover:translate-y-[-1px] shadow-[0_0_32px_-8px_var(--accent-glow)]"
             >
-              Inizia il test diagnostico
+              Misura il mio loop
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M5 12h14M13 5l7 7-7 7" />
               </svg>

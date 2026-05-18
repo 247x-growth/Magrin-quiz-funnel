@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 
 const STEPS = [
   "Mappa delle risposte",
-  "Cross-reference somatico",
-  "Identificazione del punto critico",
+  "Calcolo dell'intensità",
+  "Area di vita impattata",
   "Risultato pronto",
 ];
 

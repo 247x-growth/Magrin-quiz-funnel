@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { QUESTIONS, calculateResult, LOOP_PROFILES, type LoopType } from "../lib/quiz-data";
+import { QUESTIONS, calculateResult, RESULT_PROFILES, type QuizResult as QResult } from "../lib/quiz-data";
 import QuizIntro from "./QuizIntro";
 import QuizQuestion from "./QuizQuestion";
 import QuizCalculating from "./QuizCalculating";
@@ -12,29 +12,26 @@ type Phase = "intro" | "questions" | "calculating" | "email-gate" | "result";
 
 export default function Quiz() {
   const [phase, setPhase] = useState<Phase>("intro");
-  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [answers, setAnswers] = useState<Record<string, string | number>>({});
   const [questionIdx, setQuestionIdx] = useState(0);
-  const [result, setResult] = useState<LoopType | null>(null);
-  const [lead, setLead] = useState<{ name: string; email: string } | null>(null);
+  const [result, setResult] = useState<QResult | null>(null);
+  const [lead, setLead] = useState<{ name: string; email: string; phone: string } | null>(null);
 
   const start = useCallback(() => {
     setPhase("questions");
     setQuestionIdx(0);
   }, []);
 
-  const answer = useCallback((qid: string, optId: string) => {
-    setAnswers((prev) => ({ ...prev, [qid]: optId }));
+  const answer = useCallback((qid: string, value: string | number) => {
+    setAnswers((prev) => ({ ...prev, [qid]: value }));
 
-    // Auto-advance after a beat
     setTimeout(() => {
       const next = questionIdx + 1;
       if (next >= QUESTIONS.length) {
-        // Compute result
-        const updated = { ...answers, [qid]: optId };
+        const updated = { ...answers, [qid]: value };
         const r = calculateResult(updated);
         setResult(r);
         setPhase("calculating");
-        // Calculating screen for 2.4s, then email gate
         setTimeout(() => setPhase("email-gate"), 2400);
       } else {
         setQuestionIdx(next);
@@ -42,16 +39,19 @@ export default function Quiz() {
     }, 280);
   }, [answers, questionIdx]);
 
-  const submitLead = useCallback((name: string, email: string) => {
-    setLead({ name, email });
+  const submitLead = useCallback((name: string, email: string, phone: string) => {
+    setLead({ name, email, phone });
     setPhase("result");
 
-    // Fire-and-forget webhook (replace endpoint with real one)
     if (typeof window !== "undefined" && result) {
       const payload = {
         name,
         email,
-        loop_type: result,
+        phone,
+        problem_area: result.problemArea,
+        intensity_bucket: result.intensityBucket,
+        intensity_score: result.intensityScore,
+        body_zone_hint: result.bodyZoneHint,
         answers,
         timestamp: new Date().toISOString(),
         source: "mindreset_quiz",
@@ -60,7 +60,7 @@ export default function Quiz() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
-      }).catch(() => {/* noop, will retry via beacon */});
+      }).catch(() => {/* noop */});
     }
   }, [result, answers]);
 
@@ -84,7 +84,7 @@ export default function Quiz() {
         currentIdx={questionIdx}
         total={QUESTIONS.length}
         selected={answers[q.id]}
-        onAnswer={(optId) => answer(q.id, optId)}
+        onAnswer={(value) => answer(q.id, value)}
         onBack={goBack}
       />
     );
@@ -99,8 +99,8 @@ export default function Quiz() {
   }
 
   if (phase === "result" && result && lead) {
-    const profile = LOOP_PROFILES[result];
-    return <QuizResult profile={profile} leadName={lead.name} />;
+    const profile = RESULT_PROFILES[result.problemArea];
+    return <QuizResult result={result} profile={profile} leadName={lead.name} />;
   }
 
   return null;

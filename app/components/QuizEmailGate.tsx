@@ -3,34 +3,60 @@
 import { useState, FormEvent } from "react";
 
 type Props = {
-  onSubmit: (name: string, email: string) => void;
+  onSubmit: (name: string, email: string, phone: string) => void;
 };
+
+/** Country prefixes — IT default, ordinati per rilevanza per audience italiana. */
+const PHONE_PREFIXES: { code: string; label: string }[] = [
+  { code: "+39", label: "🇮🇹 +39" },
+  { code: "+41", label: "🇨🇭 +41" },
+  { code: "+33", label: "🇫🇷 +33" },
+  { code: "+49", label: "🇩🇪 +49" },
+  { code: "+34", label: "🇪🇸 +34" },
+  { code: "+44", label: "🇬🇧 +44" },
+  { code: "+1",  label: "🇺🇸 +1"  },
+  { code: "+43", label: "🇦🇹 +43" },
+  { code: "+40", label: "🇷🇴 +40" },
+  { code: "+32", label: "🇧🇪 +32" },
+  { code: "+31", label: "🇳🇱 +31" },
+  { code: "+351", label: "🇵🇹 +351" },
+];
+
+/** Valida il numero locale (senza prefisso): solo cifre/spazi/-/parentesi, 7-13 cifre. */
+function isLocalNumberValid(raw: string): boolean {
+  const cleaned = raw.replace(/[\s\-().]/g, "");
+  return /^[0-9]{7,13}$/.test(cleaned);
+}
 
 export default function QuizEmailGate({ onSubmit }: Props) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phonePrefix, setPhonePrefix] = useState("+39");
+  const [phoneLocal, setPhoneLocal] = useState("");
   const [accepted, setAccepted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const canSubmit = name.trim().length >= 2 && isEmailValid && accepted;
+  const phoneValid = isLocalNumberValid(phoneLocal);
+  const canSubmit = name.trim().length >= 2 && isEmailValid && phoneValid && accepted;
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!canSubmit || submitting) return;
     setSubmitting(true);
-    onSubmit(name.trim(), email.trim().toLowerCase());
+    const fullPhone = `${phonePrefix} ${phoneLocal.trim()}`;
+    onSubmit(name.trim(), email.trim().toLowerCase(), fullPhone);
   };
 
   return (
     <section className="min-h-dvh flex items-center py-16 md:py-24">
       <div className="container-narrow flex flex-col items-center text-center max-w-xl mx-auto">
         <h2 className="font-display text-[clamp(1.875rem,1rem+3vw,3rem)] font-bold leading-tight tracking-tight mb-5">
-          La diagnosi è pronta.
+          Il tuo risultato è pronto.
         </h2>
 
         <p className="text-[var(--ink-secondary)] text-lg leading-relaxed mb-10 max-w-md">
-          Riceverai la diagnosi personalizzata del tuo loop e una mappa M.A.G.R.I.N. del punto critico , 
+          Riceverai l&apos;intensità del tuo loop, l&apos;area di vita più impattata e la strategia M.A.G.R.I.N. corrispondente,
           {" "}
           <strong className="text-[var(--ink-deep)]">subito</strong>, sulla prossima pagina.
         </p>
@@ -54,7 +80,7 @@ export default function QuizEmailGate({ onSubmit }: Props) {
 
           <div className="flex flex-col gap-2">
             <label htmlFor="email" className="font-display text-sm text-[var(--ink-secondary)]">
-              Email per ricevere la diagnosi
+              Email per ricevere il risultato
             </label>
             <input
               id="email"
@@ -66,6 +92,48 @@ export default function QuizEmailGate({ onSubmit }: Props) {
               className="bg-[var(--bg-elevated)] border border-[var(--border)] rounded-md px-4 py-3 text-base text-[var(--ink-primary)] placeholder-[var(--ink-quaternary)] focus:border-[var(--accent)] focus:outline-none focus:shadow-[0_0_16px_-4px_var(--accent-glow)] transition"
               placeholder="marco@email.it"
             />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label htmlFor="phone-local" className="font-display text-sm text-[var(--ink-secondary)]">
+              Telefono <span className="text-[var(--ink-quaternary)] font-normal">(per priorità in lista)</span>
+            </label>
+            <div className="flex gap-2">
+              <div className="relative">
+                <select
+                  id="phone-prefix"
+                  aria-label="Prefisso internazionale"
+                  value={phonePrefix}
+                  onChange={(e) => setPhonePrefix(e.target.value)}
+                  className="appearance-none bg-[var(--bg-elevated)] border border-[var(--border)] rounded-md pl-3 pr-9 py-3 text-base text-[var(--ink-primary)] focus:border-[var(--accent)] focus:outline-none focus:shadow-[0_0_16px_-4px_var(--accent-glow)] transition cursor-pointer"
+                  style={{ minWidth: "7.25rem" }}
+                >
+                  {PHONE_PREFIXES.map((p) => (
+                    <option key={p.code} value={p.code} className="bg-[var(--bg-elevated)] text-[var(--ink-primary)]">
+                      {p.label}
+                    </option>
+                  ))}
+                </select>
+                <svg
+                  aria-hidden="true"
+                  className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--ink-tertiary)]"
+                  width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                >
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </div>
+              <input
+                id="phone-local"
+                type="tel"
+                autoComplete="tel-national"
+                required
+                inputMode="tel"
+                value={phoneLocal}
+                onChange={(e) => setPhoneLocal(e.target.value)}
+                className="flex-1 min-w-0 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-md px-4 py-3 text-base text-[var(--ink-primary)] placeholder-[var(--ink-quaternary)] focus:border-[var(--accent)] focus:outline-none focus:shadow-[0_0_16px_-4px_var(--accent-glow)] transition"
+                placeholder="333 1234567"
+              />
+            </div>
           </div>
 
           <label className="flex items-start gap-3 cursor-pointer mt-2">

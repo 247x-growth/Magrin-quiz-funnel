@@ -1,7 +1,9 @@
 /**
- * BodyWithOrbs V3.2, pure image swap delle 7 immagini fornite dal cliente.
- * 1 hero (all 6 orb active) + 6 single-state images.
- * Niente più SVG overlay: gli orb sono pre-rendered nei PNG.
+ * BodyWithOrbs V3.3, pure image swap.
+ * Hero "all": 4 orb active (gola, petto, plesso solare, pancia) — aggiornato
+ * 2026-05-17 dopo call Aldo (no più 6 archetipi geo-localizzati).
+ * Le 6 immagini sequence single-state restano disponibili come archivio ma non
+ * sono più usate dal flow del quiz (la result page non mostra più body+orb).
  */
 
 export type OrbActiveState = number | "all" | null;
@@ -45,7 +47,7 @@ export default function BodyWithOrbs({
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={ALL_SRC}
-          alt="Figura Vitruviana wireframe, sei punti energetici attivi"
+          alt="Figura Vitruviana wireframe, quattro punti energetici attivi sulla linea mediana"
           width={1024}
           height={1024}
           className={`block w-full h-auto select-none ${imageClassName}`}
