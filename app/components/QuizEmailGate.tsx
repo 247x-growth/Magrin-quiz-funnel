@@ -6,20 +6,20 @@ type Props = {
   onSubmit: (name: string, email: string, phone: string) => void;
 };
 
-/** Country prefixes — IT default, ordinati per rilevanza per audience italiana. */
+/** Country prefixes — IT default. Emoji rimosse: rendering Android instabile causa overflow. */
 const PHONE_PREFIXES: { code: string; label: string }[] = [
-  { code: "+39", label: "🇮🇹 +39" },
-  { code: "+41", label: "🇨🇭 +41" },
-  { code: "+33", label: "🇫🇷 +33" },
-  { code: "+49", label: "🇩🇪 +49" },
-  { code: "+34", label: "🇪🇸 +34" },
-  { code: "+44", label: "🇬🇧 +44" },
-  { code: "+1",  label: "🇺🇸 +1"  },
-  { code: "+43", label: "🇦🇹 +43" },
-  { code: "+40", label: "🇷🇴 +40" },
-  { code: "+32", label: "🇧🇪 +32" },
-  { code: "+31", label: "🇳🇱 +31" },
-  { code: "+351", label: "🇵🇹 +351" },
+  { code: "+39",  label: "IT +39" },
+  { code: "+41",  label: "CH +41" },
+  { code: "+33",  label: "FR +33" },
+  { code: "+49",  label: "DE +49" },
+  { code: "+34",  label: "ES +34" },
+  { code: "+44",  label: "UK +44" },
+  { code: "+1",   label: "US +1"  },
+  { code: "+43",  label: "AT +43" },
+  { code: "+40",  label: "RO +40" },
+  { code: "+32",  label: "BE +32" },
+  { code: "+31",  label: "NL +31" },
+  { code: "+351", label: "PT +351" },
 ];
 
 /** Valida il numero locale (senza prefisso): solo cifre/spazi/-/parentesi, 7-13 cifre. */
@@ -98,15 +98,14 @@ export default function QuizEmailGate({ onSubmit }: Props) {
             <label htmlFor="phone-local" className="font-display text-sm text-[var(--ink-secondary)]">
               Telefono <span className="text-[var(--ink-quaternary)] font-normal">(per priorità in lista)</span>
             </label>
-            <div className="flex gap-2">
-              <div className="relative">
+            <div className="flex gap-2 w-full min-w-0">
+              <div className="relative shrink-0">
                 <select
                   id="phone-prefix"
                   aria-label="Prefisso internazionale"
                   value={phonePrefix}
                   onChange={(e) => setPhonePrefix(e.target.value)}
-                  className="appearance-none bg-[var(--bg-elevated)] border border-[var(--border)] rounded-md pl-3 pr-9 py-3 text-base text-[var(--ink-primary)] focus:border-[var(--accent)] focus:outline-none focus:shadow-[0_0_16px_-4px_var(--accent-glow)] transition cursor-pointer"
-                  style={{ minWidth: "7.25rem" }}
+                  className="appearance-none bg-[var(--bg-elevated)] border border-[var(--border)] rounded-md pl-3 pr-8 py-3 text-base text-[var(--ink-primary)] focus:border-[var(--accent)] focus:outline-none focus:shadow-[0_0_16px_-4px_var(--accent-glow)] transition cursor-pointer w-[6rem]"
                 >
                   {PHONE_PREFIXES.map((p) => (
                     <option key={p.code} value={p.code} className="bg-[var(--bg-elevated)] text-[var(--ink-primary)]">

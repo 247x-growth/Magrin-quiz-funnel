@@ -118,9 +118,11 @@
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
     font-feature-settings: "kern", "liga", "calt", "ss01";
+    overflow-x: hidden;
   }
 
   body {
+    overflow-x: hidden;
     background: var(--bg-primary);
     color: var(--ink-primary);
     font-family: var(--font-body);
