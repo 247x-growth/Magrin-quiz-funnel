@@ -93,7 +93,7 @@ export const QUESTIONS: QuizQuestion[] = [
     type: "single",
     question: "Quando un pensiero negativo arriva, dove lo senti per primo nel corpo?",
     helper:
-      "Chiudi gli occhi un secondo. La sensazione fisica precede sempre il pensiero. Non c'è una zona fissa: scegli quella che riconosci di più in questo periodo.",
+      "La sensazione fisica precede sempre il pensiero. Non c'è una zona fissa: scegli quella che riconosci di più in questo periodo.",
     options: [
       { id: "1a", label: "Nella gola, come un nodo che non passa", score: { throat: 3 } },
       { id: "1b", label: "Al centro del petto, una pressione", score: { heart: 3, "solar-plexus": 1 } },
