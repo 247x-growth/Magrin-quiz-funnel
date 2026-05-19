@@ -31,7 +31,7 @@ export default function QuizIntro({ onStart }: Props) {
           {/* H1 — sensazione fisica prima (cold-friendly), loop spiegato nel sub */}
           <h1 className="font-display text-[clamp(2rem,1rem+4vw,3.75rem)] leading-[1.05] tracking-tight">
             Quel nodo in gola. Quel peso allo stomaco.<br />
-            <em className="text-[var(--accent)] font-bold not-italic">Non è solo un&apos;emozione. Misuriamola.</em>
+            <em className="text-[var(--accent)] font-bold not-italic">Non è solo un&apos;emozione.</em>
           </h1>
 
           {/* Subtitle — introduce il loop come spiegazione del fenomeno */}
