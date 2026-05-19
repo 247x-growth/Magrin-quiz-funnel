@@ -97,11 +97,9 @@ export const QUESTIONS: QuizQuestion[] = [
     options: [
       { id: "1a", label: "Nella gola, come un nodo che non passa", score: { throat: 3 } },
       { id: "1b", label: "Al centro del petto, una pressione", score: { heart: 3, "solar-plexus": 1 } },
-      { id: "1c", label: "Tra petto e stomaco, una stretta al diaframma", score: { "solar-plexus": 3 } },
-      { id: "1d", label: "Allo stomaco, un peso che mi accompagna", score: { "solar-plexus": 3, navel: 1 } },
-      { id: "1e", label: "Nella pancia, una vibrazione di fondo", score: { navel: 3 } },
-      { id: "1f", label: "Più giù, una stanchezza che blocca", score: { pelvis: 3 } },
-      { id: "1g", label: "Non lo so dire, è ovunque", score: { forehead: 1, "solar-plexus": 1, heart: 1 } },
+      { id: "1c", label: "Allo stomaco, un peso o una stretta", score: { "solar-plexus": 3, navel: 1 } },
+      { id: "1d", label: "Nella pancia o più giù, una stanchezza che blocca", score: { navel: 2, pelvis: 2 } },
+      { id: "1e", label: "Non lo so dire, è ovunque", score: { forehead: 1, "solar-plexus": 1, heart: 1 } },
     ],
   },
   {
