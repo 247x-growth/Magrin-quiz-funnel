@@ -36,7 +36,7 @@ export default function QuizIntro({ onStart }: Props) {
 
           {/* Subtitle — introduce il loop come spiegazione del fenomeno */}
           <p className="text-[1.125rem] md:text-[1.25rem] text-[var(--ink-secondary)] leading-relaxed">
-            È la <strong className="text-[var(--ink-deep)]">firma fisica</strong> di un pensiero negativo che continua a tornare. Andrea Magrin lo chiama <strong className="text-[var(--accent)]">loop</strong>. In 9 domande scopri quanto è forte il tuo e in quale area della vita ti sta costando di più.
+            È la <strong className="text-[var(--ink-deep)]">manifestazione fisica</strong> di un pensiero negativo che continua a tornare. Andrea Magrin lo chiama <strong className="text-[var(--accent)]">loop</strong>. In 9 domande scopri quanto è forte il tuo e in quale area della vita ti sta costando di più.
             <span className="block mt-3 text-sm text-[var(--ink-tertiary)] italic">9 domande, 90 secondi.</span>
           </p>
 
