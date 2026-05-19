@@ -387,9 +387,13 @@ function TestimonialCarousel({ items }: { items: Testimonial[] }) {
           animation: tcarousel var(--marquee-duration) linear infinite;
           will-change: transform;
         }
-        .testimonial-carousel-mask:hover .testimonial-carousel-track,
-        .testimonial-carousel-mask:focus-within .testimonial-carousel-track {
-          animation-play-state: paused;
+        /* Pause-on-hover SOLO su device con hover reale (desktop).
+           Su mobile :hover diventa sticky dopo touch → bug "carosello fermo". */
+        @media (hover: hover) {
+          .testimonial-carousel-mask:hover .testimonial-carousel-track,
+          .testimonial-carousel-mask:focus-within .testimonial-carousel-track {
+            animation-play-state: paused;
+          }
         }
         @keyframes tcarousel {
           from {

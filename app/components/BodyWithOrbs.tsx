@@ -17,7 +17,7 @@ const SEQUENCE = [
   { src: "/body-sequence/06-neutralizzare.png",label: "Bacino"        },
 ];
 
-const ALL_SRC = "/body-all.png";
+const ALL_SRC = "/body-all.webp";
 
 type Props = {
   activeOrb?: OrbActiveState;

@@ -11,7 +11,7 @@ export default function QuizIntro({ onStart }: Props) {
     <section className="min-h-dvh flex items-center py-16 md:py-24">
       <div className="container-wide grid lg:grid-cols-[1.1fr_1fr] gap-8 lg:gap-16 items-center">
         {/* LEFT, narrative */}
-        <div className="order-2 lg:order-1 flex flex-col gap-7 max-w-xl mx-auto lg:mx-0 text-center lg:text-left">
+        <div className="order-1 flex flex-col gap-7 max-w-xl mx-auto lg:mx-0 text-center lg:text-left">
           {/* Logo */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -28,15 +28,15 @@ export default function QuizIntro({ onStart }: Props) {
             fetchPriority="high"
           />
 
-          {/* H1 */}
-          <h1 className="font-display text-[clamp(2.25rem,1rem+4.5vw,4.25rem)] leading-[1.05] tracking-tight">
-            Misurare il tuo loop<br />
-            <em className="text-[var(--accent)] font-bold not-italic">è il primo passo per scioglierlo.</em>
+          {/* H1 — sensazione fisica prima (cold-friendly), loop spiegato nel sub */}
+          <h1 className="font-display text-[clamp(2rem,1rem+4vw,3.75rem)] leading-[1.05] tracking-tight">
+            Quel nodo in gola. Quel peso allo stomaco.<br />
+            <em className="text-[var(--accent)] font-bold not-italic">Non è solo un&apos;emozione. Misuriamola.</em>
           </h1>
 
-          {/* Subtitle — call-out specifico + promise concreta */}
+          {/* Subtitle — introduce il loop come spiegazione del fenomeno */}
           <p className="text-[1.125rem] md:text-[1.25rem] text-[var(--ink-secondary)] leading-relaxed">
-            Se anche tu hai <strong className="text-[var(--ink-deep)]">pensieri negativi che continuano a tornare</strong> e ti tormentano, in 9 domande identifichi <strong className="text-[var(--accent)]">quanto è forte il tuo loop</strong> e la strategia per neutralizzarlo.
+            È la <strong className="text-[var(--ink-deep)]">firma fisica</strong> di un pensiero negativo che continua a tornare. Andrea Magrin lo chiama <strong className="text-[var(--accent)]">loop</strong>. In 9 domande scopri quanto è forte il tuo e in quale area della vita ti sta costando di più.
             <span className="block mt-3 text-sm text-[var(--ink-tertiary)] italic">9 domande, 90 secondi.</span>
           </p>
 
@@ -81,10 +81,10 @@ export default function QuizIntro({ onStart }: Props) {
         </div>
 
         {/* RIGHT, body all */}
-        <div className="order-1 lg:order-2 flex items-center justify-center">
+        <div className="order-2 flex items-center justify-center">
           <BodyWithOrbs
             activeOrb="all"
-            className="w-full max-w-[520px] mx-auto breathe-slow"
+            className="w-full max-w-[280px] lg:max-w-[520px] mx-auto breathe-slow"
           />
         </div>
       </div>

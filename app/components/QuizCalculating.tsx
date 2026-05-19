@@ -26,7 +26,7 @@ export default function QuizCalculating() {
         <div className="xray-frame relative w-56 md:w-64 aspect-square">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/body-all.png"
+            src="/body-all.webp"
             alt=""
             aria-hidden="true"
             width={1024}
