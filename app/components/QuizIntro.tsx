@@ -80,11 +80,11 @@ export default function QuizIntro({ onStart }: Props) {
           </p>
         </div>
 
-        {/* RIGHT, body all */}
-        <div className="order-2 flex items-center justify-center">
+        {/* RIGHT, body all — nascosto su mobile (LCP, no info sotto fold) */}
+        <div className="order-2 hidden lg:flex items-center justify-center">
           <BodyWithOrbs
             activeOrb="all"
-            className="w-full max-w-[280px] lg:max-w-[520px] mx-auto breathe-slow"
+            className="w-full max-w-[520px] mx-auto breathe-slow"
           />
         </div>
       </div>
