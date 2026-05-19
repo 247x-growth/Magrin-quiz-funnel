@@ -205,7 +205,7 @@ export default function QuizResult({ result, profile, leadName }: Props) {
                 "radial-gradient(ellipse 70% 50% at 50% 0%, oklch(45% 0.18 25 / 0.18), transparent 70%), radial-gradient(ellipse 60% 40% at 50% 100%, oklch(45% 0.18 25 / 0.12), transparent 70%)",
             }}
           />
-          <div className="relative bg-[var(--bg-elevated)] border-2 border-[var(--accent)] rounded-2xl p-8 md:p-12 shadow-[0_0_60px_-10px_var(--accent-glow)]">
+          <div className="relative bg-[var(--bg-elevated)] border md:border-2 border-[var(--accent)] rounded-2xl p-6 md:p-12 shadow-[0_0_40px_-12px_var(--accent-glow)] md:shadow-[0_0_60px_-10px_var(--accent-glow)]">
             <p className="font-display italic text-[var(--ink-tertiary)] text-base mb-4 text-center">
               La soluzione per il tuo loop
             </p>
@@ -239,39 +239,38 @@ export default function QuizResult({ result, profile, leadName }: Props) {
               </li>
             </ul>
 
-            <div className="bg-white text-[#0F1024] rounded-xl p-6 md:p-10 -mx-2 md:mx-0">
-              <div className="flex items-end justify-center gap-4 mb-1">
-                <span className="text-[#D63A47] text-3xl md:text-5xl font-bold line-through decoration-[#D63A47] decoration-[3px] pb-2">
+            <div className="bg-white text-[#0F1024] rounded-xl p-5 md:p-10">
+              {/* Pricing: stack mobile / inline desktop */}
+              <div className="flex flex-col md:flex-row md:items-end md:justify-center md:gap-4 mb-1 text-center">
+                <span className="text-[#D63A47] text-xl md:text-5xl font-bold line-through decoration-[#D63A47] decoration-[2px] md:decoration-[3px] md:pb-2 leading-none">
                   197€
                 </span>
-                <span className="font-display text-[3.5rem] md:text-[5rem] text-[#1F7A3A] font-bold leading-none tracking-tight">
+                <span className="font-display text-[2.75rem] md:text-[5rem] text-[#1F7A3A] font-bold leading-none tracking-tight whitespace-nowrap">
                   27 euro
                 </span>
               </div>
-              <p className="text-center font-display italic text-[#5C6080] text-sm md:text-base mb-6">
+              <p className="text-center font-display italic text-[#5C6080] text-sm md:text-base mt-2 mb-5 md:mb-6">
                 Risparmi 170€ · Solo per le prossime 24 ore
               </p>
 
               <a
                 href={stripeUrl}
-                className="cta-pulse group flex items-center justify-center gap-3 w-full bg-[#EA5D35] text-white font-bold text-lg md:text-2xl leading-tight px-6 md:px-10 py-5 md:py-7 rounded-xl transition-all hover:bg-[#FC7951] hover:translate-y-[-2px] text-center"
+                className="cta-pulse group flex items-center justify-center gap-3 w-full bg-[#EA5D35] text-white font-bold text-base md:text-2xl leading-tight px-5 md:px-10 py-4 md:py-7 rounded-xl transition-all hover:bg-[#FC7951] hover:translate-y-[-2px] text-center"
               >
                 <span className="text-balance">Inizia ORA a sciogliere il tuo loop</span>
-                <svg className="shrink-0 transition-transform group-hover:translate-x-1" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <svg className="shrink-0 transition-transform group-hover:translate-x-1" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h14M13 5l7 7-7 7" />
                 </svg>
               </a>
 
-              <p className="text-sm text-[#5C6080] mt-5 flex flex-wrap justify-center items-center gap-x-3 gap-y-1 text-center">
-                <span className="inline-flex items-center gap-1.5">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#EA5D35]"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                  Pagamento sicuro Stripe
-                </span>
-                <span aria-hidden="true">·</span>
-                <span>Visa · Apple Pay · Google Pay</span>
-                <span aria-hidden="true">·</span>
-                <span>Garanzia rimborso</span>
-              </p>
+              {/* Trust row: 2 righe ordinate mobile, 1 riga desktop */}
+              <div className="mt-4 md:mt-5 text-xs md:text-sm text-[#5C6080] text-center leading-relaxed">
+                <p className="inline-flex items-center justify-center gap-1.5">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#EA5D35] shrink-0"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  <span>Pagamento sicuro Stripe <span aria-hidden="true" className="mx-1">·</span> Garanzia rimborso</span>
+                </p>
+                <p className="mt-0.5">Visa · Apple Pay · Google Pay</p>
+              </div>
             </div>
           </div>
         </div>
