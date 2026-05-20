@@ -339,90 +339,124 @@ export default function QuizResult({ result, profile, leadName }: Props) {
 }
 
 function TestimonialCarousel({ items }: { items: Testimonial[] }) {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const trackRef = useRef<HTMLDivElement | null>(null);
-  const [paused, setPaused] = useState(false);
-  // animation-delay negativo per riprendere l'animation dalla posizione visiva corrente
-  const [resumeDelay, setResumeDelay] = useState(0);
-
-  const durationSec = Math.max(items.length * 9, 30);
-
-  // PAUSE: l'utente posa il dito → animation off, scrollLeft = posizione visiva corrente
-  const pause = () => {
-    if (paused) return;
-    const track = trackRef.current;
-    const container = containerRef.current;
-    if (!track || !container) {
-      setPaused(true);
-      return;
-    }
-    const cs = window.getComputedStyle(track);
-    const m = cs.transform;
-    let translateX = 0;
-    if (m && m !== "none") {
-      const match = m.match(/matrix.*\(([^)]+)\)/);
-      if (match) {
-        const parts = match[1].split(",").map((s) => parseFloat(s.trim()));
-        translateX = parts.length === 6 ? parts[4] : parts.length === 16 ? parts[12] : 0;
-      }
-    }
-    setPaused(true);
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        if (container) container.scrollLeft = Math.abs(translateX);
-      });
-    });
-  };
-
-  // RESUME: l'utente alza il dito → riprendi auto-scroll dalla posizione attuale
-  const resume = () => {
-    if (!paused) return;
-    const container = containerRef.current;
-    const track = trackRef.current;
-    if (!container || !track) {
-      setPaused(false);
-      return;
-    }
-    // La track ha width = 2x items_width (loop seamless). Animation va 0 → -50% in durationSec.
-    // Percent (0..1) della posizione attuale entro la prima metà.
-    const halfWidth = track.scrollWidth / 2;
-    const currentX = Math.max(0, container.scrollLeft) % halfWidth;
-    const percent = halfWidth > 0 ? currentX / halfWidth : 0;
-    setResumeDelay(-(percent * durationSec));
-    setPaused(false);
-  };
+  // Detect mobile vs desktop una sola volta al mount (no listener perché un viewport
+  // switch a runtime è raro e il refresh ricalcola comunque).
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(hover: none) and (pointer: coarse)");
+    setIsMobile(mq.matches);
+  }, []);
 
   if (items.length === 0) return null;
 
-  // Quando paused mostro solo il pool reale (no doppione) per scroll manuale pulito
-  const loop = paused ? items : [...items, ...items];
+  if (isMobile) return <TestimonialCarouselMobile items={items} />;
+  return <TestimonialCarouselDesktop items={items} />;
+}
+
+function TestimonialCarouselMobile({ items }: { items: Testimonial[] }) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
+
+  const updateEdges = () => {
+    const el = containerRef.current;
+    if (!el) return;
+    setAtStart(el.scrollLeft <= 8);
+    setAtEnd(el.scrollLeft + el.clientWidth >= el.scrollWidth - 8);
+  };
+
+  useEffect(() => {
+    updateEdges();
+  }, []);
+
+  const step = (dir: -1 | 1) => {
+    const el = containerRef.current;
+    if (!el) return;
+    // Card width effettiva = clientWidth * 0.75 (card 75vw) + gap 16px
+    const stride = el.clientWidth * 0.75 + 16;
+    el.scrollBy({ left: dir * stride, behavior: "smooth" });
+  };
+
+  return (
+    <div className="relative">
+      <div
+        ref={containerRef}
+        onScroll={updateEdges}
+        className="overflow-x-auto testimonial-mobile-scroll flex gap-4 snap-x snap-mandatory px-4 -mx-4 pb-2"
+        role="region"
+        aria-label="Testimonianze, scorri orizzontalmente o usa le frecce"
+      >
+        {items.map((t, i) => (
+          <div
+            key={`${t.name}-${i}`}
+            className="shrink-0 w-[75vw] max-w-[300px] h-[24rem] snap-start"
+          >
+            <TestimonialCard t={t} />
+          </div>
+        ))}
+      </div>
+
+      {/* Frecce navigazione */}
+      <div className="flex items-center justify-center gap-3 mt-4">
+        <button
+          type="button"
+          onClick={() => step(-1)}
+          disabled={atStart}
+          aria-label="Testimonianza precedente"
+          className="w-11 h-11 rounded-full grid place-items-center bg-[var(--bg-elevated)] border border-[var(--border)] text-[var(--ink-primary)] transition-all disabled:opacity-30 disabled:cursor-not-allowed active:scale-95"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          onClick={() => step(1)}
+          disabled={atEnd}
+          aria-label="Testimonianza successiva"
+          className="w-11 h-11 rounded-full grid place-items-center bg-[var(--accent)] text-[var(--accent-fg)] transition-all disabled:opacity-30 disabled:cursor-not-allowed active:scale-95 shadow-[0_0_16px_-4px_var(--accent-glow)]"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
+      </div>
+
+      <style jsx>{`
+        .testimonial-mobile-scroll {
+          scroll-padding-left: 1rem;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+        }
+        .testimonial-mobile-scroll::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function TestimonialCarouselDesktop({ items }: { items: Testimonial[] }) {
+  // Desktop: auto-scroll marquee come prima, pause-on-hover via CSS.
+  const loop = [...items, ...items];
+  const durationSec = Math.max(items.length * 9, 30);
 
   return (
     <div
-      ref={containerRef}
-      onPointerDown={pause}
-      onPointerUp={resume}
-      onPointerCancel={resume}
-      onPointerLeave={resume}
-      className={`relative testimonial-carousel-mask ${paused ? "overflow-x-auto testimonial-carousel-snap" : "overflow-hidden"}`}
+      className="relative overflow-hidden testimonial-carousel-mask"
       role="region"
-      aria-label="Testimonianze, scorrimento automatico — tieni premuto e trascina per controllare a mano"
+      aria-label="Testimonianze, scorrimento automatico, passa sopra per fermare"
     >
       <div
-        ref={trackRef}
-        className="flex gap-5 md:gap-6 testimonial-carousel-track"
-        style={{
-          ["--marquee-duration" as string]: `${durationSec}s`,
-          ...(paused
-            ? { animation: "none", transform: "none", width: "max-content" }
-            : { animationDelay: `${resumeDelay}s` }),
-        }}
+        className="flex gap-6 testimonial-carousel-track"
+        style={{ ["--marquee-duration" as string]: `${durationSec}s` }}
       >
         {loop.map((t, i) => (
           <div
             key={`${t.name}-${i}`}
-            className="shrink-0 w-[85vw] sm:w-[360px] md:w-[400px] h-[26rem] md:h-[28rem] testimonial-card-snap"
-            aria-hidden={!paused && i >= items.length}
+            className="shrink-0 w-[400px] h-[28rem]"
+            aria-hidden={i >= items.length}
           >
             <TestimonialCard t={t} />
           </div>
@@ -431,59 +465,24 @@ function TestimonialCarousel({ items }: { items: Testimonial[] }) {
 
       <style jsx>{`
         .testimonial-carousel-mask {
-          mask-image: linear-gradient(
-            to right,
-            transparent 0,
-            black 6%,
-            black 94%,
-            transparent 100%
-          );
-          -webkit-mask-image: linear-gradient(
-            to right,
-            transparent 0,
-            black 6%,
-            black 94%,
-            transparent 100%
-          );
-          /* Permettiamo entrambi gli assi così il browser sceglie in base al gesto dominante.
-             pan-x da solo bloccava lo scroll verticale della pagina sopra il carosello. */
-          touch-action: pan-x pan-y;
-        }
-        .testimonial-carousel-snap {
-          scroll-snap-type: x mandatory;
-          -webkit-overflow-scrolling: touch;
-          scrollbar-width: none;
-        }
-        .testimonial-carousel-snap::-webkit-scrollbar {
-          display: none;
-        }
-        .testimonial-card-snap {
-          scroll-snap-align: start;
+          mask-image: linear-gradient(to right, transparent 0, black 6%, black 94%, transparent 100%);
+          -webkit-mask-image: linear-gradient(to right, transparent 0, black 6%, black 94%, transparent 100%);
         }
         .testimonial-carousel-track {
           width: max-content;
           animation: tcarousel var(--marquee-duration) linear infinite;
           will-change: transform;
         }
-        /* Pause-on-hover SOLO desktop con hover reale (mobile :hover resta sticky → bug). */
-        @media (hover: hover) {
-          .testimonial-carousel-mask:hover .testimonial-carousel-track,
-          .testimonial-carousel-mask:focus-within .testimonial-carousel-track {
-            animation-play-state: paused;
-          }
+        .testimonial-carousel-mask:hover .testimonial-carousel-track,
+        .testimonial-carousel-mask:focus-within .testimonial-carousel-track {
+          animation-play-state: paused;
         }
         @keyframes tcarousel {
-          from {
-            transform: translate3d(0, 0, 0);
-          }
-          to {
-            transform: translate3d(-50%, 0, 0);
-          }
+          from { transform: translate3d(0, 0, 0); }
+          to   { transform: translate3d(-50%, 0, 0); }
         }
         @media (prefers-reduced-motion: reduce) {
-          .testimonial-carousel-track {
-            animation: none;
-          }
+          .testimonial-carousel-track { animation: none; }
         }
       `}</style>
     </div>
