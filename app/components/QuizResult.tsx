@@ -342,11 +342,13 @@ function TestimonialCarousel({ items }: { items: Testimonial[] }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
   const [paused, setPaused] = useState(false);
+  // animation-delay negativo per riprendere l'animation dalla posizione visiva corrente
+  const [resumeDelay, setResumeDelay] = useState(0);
 
-  // Switch one-way: al primo touch/click, l'auto-scroll si ferma alla posizione corrente
-  // e il carosello diventa scrollabile a mano via swipe/wheel orizzontale.
-  // Non riprende auto: l'utente è "in controllo" da quel momento.
-  const engage = () => {
+  const durationSec = Math.max(items.length * 9, 30);
+
+  // PAUSE: l'utente posa il dito → animation off, scrollLeft = posizione visiva corrente
+  const pause = () => {
     if (paused) return;
     const track = trackRef.current;
     const container = containerRef.current;
@@ -354,12 +356,10 @@ function TestimonialCarousel({ items }: { items: Testimonial[] }) {
       setPaused(true);
       return;
     }
-    // Leggi translateX corrente dall'animazione CSS in corso.
     const cs = window.getComputedStyle(track);
     const m = cs.transform;
     let translateX = 0;
     if (m && m !== "none") {
-      // matrix(a,b,c,d,tx,ty) → tx idx 4 · matrix3d(...16) → tx idx 12
       const match = m.match(/matrix.*\(([^)]+)\)/);
       if (match) {
         const parts = match[1].split(",").map((s) => parseFloat(s.trim()));
@@ -367,8 +367,6 @@ function TestimonialCarousel({ items }: { items: Testimonial[] }) {
       }
     }
     setPaused(true);
-    // Doppio rAF: lascia che il render con paused=true applichi animation:none e overflow-x:auto
-    // prima di trasferire la posizione visiva su scrollLeft (no jump).
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         if (container) container.scrollLeft = Math.abs(translateX);
@@ -376,25 +374,48 @@ function TestimonialCarousel({ items }: { items: Testimonial[] }) {
     });
   };
 
+  // RESUME: l'utente alza il dito → riprendi auto-scroll dalla posizione attuale
+  const resume = () => {
+    if (!paused) return;
+    const container = containerRef.current;
+    const track = trackRef.current;
+    if (!container || !track) {
+      setPaused(false);
+      return;
+    }
+    // La track ha width = 2x items_width (loop seamless). Animation va 0 → -50% in durationSec.
+    // Percent (0..1) della posizione attuale entro la prima metà.
+    const halfWidth = track.scrollWidth / 2;
+    const currentX = Math.max(0, container.scrollLeft) % halfWidth;
+    const percent = halfWidth > 0 ? currentX / halfWidth : 0;
+    setResumeDelay(-(percent * durationSec));
+    setPaused(false);
+  };
+
   if (items.length === 0) return null;
 
+  // Quando paused mostro solo il pool reale (no doppione) per scroll manuale pulito
   const loop = paused ? items : [...items, ...items];
-  const durationSec = Math.max(items.length * 9, 30);
 
   return (
     <div
       ref={containerRef}
-      onPointerDown={engage}
+      onPointerDown={pause}
+      onPointerUp={resume}
+      onPointerCancel={resume}
+      onPointerLeave={resume}
       className={`relative testimonial-carousel-mask ${paused ? "overflow-x-auto testimonial-carousel-snap" : "overflow-hidden"}`}
       role="region"
-      aria-label={paused ? "Testimonianze, scorri orizzontalmente" : "Testimonianze, scorrimento automatico — tocca per controllare a mano"}
+      aria-label="Testimonianze, scorrimento automatico — tieni premuto e trascina per controllare a mano"
     >
       <div
         ref={trackRef}
         className="flex gap-5 md:gap-6 testimonial-carousel-track"
         style={{
           ["--marquee-duration" as string]: `${durationSec}s`,
-          ...(paused ? { animation: "none", transform: "none", width: "max-content" } : null),
+          ...(paused
+            ? { animation: "none", transform: "none", width: "max-content" }
+            : { animationDelay: `${resumeDelay}s` }),
         }}
       >
         {loop.map((t, i) => (
