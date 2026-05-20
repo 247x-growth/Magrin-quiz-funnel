@@ -50,8 +50,18 @@ export default function QuizResult({ result, profile, leadName }: Props) {
     return () => io.disconnect();
   }, []);
 
+  // Forza scroll al top al mount, override del browser scroll restoration
+  // (su Android Chrome a volte la TYP apre già con uno scroll piccolo applicato).
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, []);
+
   return (
-    <section className="min-h-dvh py-16 md:py-24">
+    <section className="min-h-dvh py-8 md:py-24">
       <div className="container-wide">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
@@ -110,16 +120,10 @@ export default function QuizResult({ result, profile, leadName }: Props) {
           </div>
         </div>
 
-        {/* Solution lead-in narrative — sempre visibile (mobile + desktop) */}
+        {/* Solution lead-in — punchy, una sola frase chiave sopra il CTA */}
         <div className="max-w-2xl mx-auto mb-6 md:mb-8 text-center">
           <p className="text-[1.0625rem] md:text-[1.125rem] text-[var(--ink-secondary)] leading-relaxed">
-            Per il tuo loop <strong className="text-[var(--ink-primary)]">{profile.area === "relational" ? "relazionale-identitario" : "performativo-energetico"}</strong> c&apos;è una soluzione precisa, non un libro né un workshop.
-          </p>
-          <p className="mt-4 text-[1rem] md:text-[1.0625rem] text-[var(--ink-tertiary)] leading-relaxed">
-            <strong className="text-[var(--accent)]">MindReset</strong> è il video-corso interattivo che ti guida nell&apos;eliminazione dei pensieri negativi con il Metodo M.A.G.R.I.N. Bastano <strong className="text-[var(--ink-primary)]">15 minuti al giorno per 7 giorni</strong> per accedere allo <em className="text-[var(--ink-primary)] not-italic font-semibold">&ldquo;stato senzamente&rdquo;</em>, l&apos;assenza totale di pensieri negativi, ansia e sofferenza, e imparare a richiamarlo <em className="not-italic font-semibold">a comando</em> in qualsiasi situazione.
-          </p>
-          <p className="mt-4 text-[0.9375rem] md:text-[1rem] text-[var(--ink-quaternary)] leading-relaxed italic">
-            Alla fine rimisuri l&apos;intensità sulla stessa scala 1-10 di oggi e vedi quanto è scesa.
+            Per il tuo loop <strong className="text-[var(--ink-primary)]">{profile.area === "relational" ? "relazionale-identitario" : "performativo-energetico"}</strong> c&apos;è una soluzione precisa: <strong className="text-[var(--accent)]">MindReset Challenge</strong>, il video-corso di <strong className="text-[var(--ink-primary)]">7 giorni · 15 min al giorno</strong> col Metodo M.A.G.R.I.N.
           </p>
         </div>
 
@@ -143,7 +147,7 @@ export default function QuizResult({ result, profile, leadName }: Props) {
               </svg>
             </span>
           </a>
-          <p className="text-center text-[var(--ink-tertiary)] text-[11px] utility-text tracking-[0.2em] mt-4 opacity-80">
+          <p className="text-center text-[var(--ink-secondary)] text-[11px] utility-text tracking-[0.2em] mt-4">
             ↓ &nbsp; scopri perché ti succede
           </p>
         </div>
@@ -335,29 +339,69 @@ export default function QuizResult({ result, profile, leadName }: Props) {
 }
 
 function TestimonialCarousel({ items }: { items: Testimonial[] }) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const [paused, setPaused] = useState(false);
+
+  // Switch one-way: al primo touch/click, l'auto-scroll si ferma alla posizione corrente
+  // e il carosello diventa scrollabile a mano via swipe/wheel orizzontale.
+  // Non riprende auto: l'utente è "in controllo" da quel momento.
+  const engage = () => {
+    if (paused) return;
+    const track = trackRef.current;
+    const container = containerRef.current;
+    if (!track || !container) {
+      setPaused(true);
+      return;
+    }
+    // Leggi translateX corrente dall'animazione CSS in corso.
+    const cs = window.getComputedStyle(track);
+    const m = cs.transform;
+    let translateX = 0;
+    if (m && m !== "none") {
+      // matrix(a,b,c,d,tx,ty) → tx idx 4 · matrix3d(...16) → tx idx 12
+      const match = m.match(/matrix.*\(([^)]+)\)/);
+      if (match) {
+        const parts = match[1].split(",").map((s) => parseFloat(s.trim()));
+        translateX = parts.length === 6 ? parts[4] : parts.length === 16 ? parts[12] : 0;
+      }
+    }
+    setPaused(true);
+    // Doppio rAF: lascia che il render con paused=true applichi animation:none e overflow-x:auto
+    // prima di trasferire la posizione visiva su scrollLeft (no jump).
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (container) container.scrollLeft = Math.abs(translateX);
+      });
+    });
+  };
+
   if (items.length === 0) return null;
 
-  // Loop seamless: duplico l'array così l'animazione translateX(-50%) ricicla pulito.
-  const loop = [...items, ...items];
-
-  // Velocità ~9 secondi per card. Min 30s per evitare scroll troppo veloce su pool piccoli.
+  const loop = paused ? items : [...items, ...items];
   const durationSec = Math.max(items.length * 9, 30);
 
   return (
     <div
-      className="relative overflow-hidden testimonial-carousel-mask"
+      ref={containerRef}
+      onPointerDown={engage}
+      className={`relative testimonial-carousel-mask ${paused ? "overflow-x-auto testimonial-carousel-snap" : "overflow-hidden"}`}
       role="region"
-      aria-label="Testimonianze, scorrimento automatico"
+      aria-label={paused ? "Testimonianze, scorri orizzontalmente" : "Testimonianze, scorrimento automatico — tocca per controllare a mano"}
     >
       <div
+        ref={trackRef}
         className="flex gap-5 md:gap-6 testimonial-carousel-track"
-        style={{ ["--marquee-duration" as string]: `${durationSec}s` }}
+        style={{
+          ["--marquee-duration" as string]: `${durationSec}s`,
+          ...(paused ? { animation: "none", transform: "none", width: "max-content" } : null),
+        }}
       >
         {loop.map((t, i) => (
           <div
             key={`${t.name}-${i}`}
-            className="shrink-0 w-[85vw] sm:w-[360px] md:w-[400px] h-[26rem] md:h-[28rem]"
-            aria-hidden={i >= items.length}
+            className="shrink-0 w-[85vw] sm:w-[360px] md:w-[400px] h-[26rem] md:h-[28rem] testimonial-card-snap"
+            aria-hidden={!paused && i >= items.length}
           >
             <TestimonialCard t={t} />
           </div>
@@ -380,14 +424,25 @@ function TestimonialCarousel({ items }: { items: Testimonial[] }) {
             black 94%,
             transparent 100%
           );
+          touch-action: pan-x;
+        }
+        .testimonial-carousel-snap {
+          scroll-snap-type: x mandatory;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+        }
+        .testimonial-carousel-snap::-webkit-scrollbar {
+          display: none;
+        }
+        .testimonial-card-snap {
+          scroll-snap-align: start;
         }
         .testimonial-carousel-track {
           width: max-content;
           animation: tcarousel var(--marquee-duration) linear infinite;
           will-change: transform;
         }
-        /* Pause-on-hover SOLO su device con hover reale (desktop).
-           Su mobile :hover diventa sticky dopo touch → bug "carosello fermo". */
+        /* Pause-on-hover SOLO desktop con hover reale (mobile :hover resta sticky → bug). */
         @media (hover: hover) {
           .testimonial-carousel-mask:hover .testimonial-carousel-track,
           .testimonial-carousel-mask:focus-within .testimonial-carousel-track {
