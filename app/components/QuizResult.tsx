@@ -424,7 +424,9 @@ function TestimonialCarousel({ items }: { items: Testimonial[] }) {
             black 94%,
             transparent 100%
           );
-          touch-action: pan-x;
+          /* Permettiamo entrambi gli assi così il browser sceglie in base al gesto dominante.
+             pan-x da solo bloccava lo scroll verticale della pagina sopra il carosello. */
+          touch-action: pan-x pan-y;
         }
         .testimonial-carousel-snap {
           scroll-snap-type: x mandatory;
