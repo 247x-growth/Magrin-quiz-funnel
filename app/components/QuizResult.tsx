@@ -120,11 +120,38 @@ export default function QuizResult({ result, profile, leadName }: Props) {
           </div>
         </div>
 
-        {/* Solution lead-in — punchy, una sola frase chiave sopra il CTA */}
-        <div className="max-w-2xl mx-auto mb-6 md:mb-8 text-center">
-          <p className="text-[1.0625rem] md:text-[1.125rem] text-[var(--ink-secondary)] leading-relaxed">
-            Per il tuo loop <strong className="text-[var(--ink-primary)]">{profile.area === "relational" ? "relazionale-identitario" : "performativo-energetico"}</strong> c&apos;è una soluzione precisa: <strong className="text-[var(--accent)]">MindReset Challenge</strong>, il video-corso di <strong className="text-[var(--ink-primary)]">7 giorni · 15 min al giorno</strong> col Metodo M.A.G.R.I.N.
+        {/* Solution lead-in — spiega tailored al cluster perché la Challenge fa al caso suo */}
+        <div className="max-w-2xl mx-auto mb-6 md:mb-8">
+          <p className="utility-text text-[10px] md:text-[11px] tracking-[0.2em] text-[var(--ink-tertiary)] uppercase text-center mb-3">
+            La soluzione per il tuo loop
           </p>
+          <h2 className="font-display text-[1.375rem] md:text-[1.75rem] font-bold leading-tight tracking-tight text-center mb-4">
+            <span className="text-[var(--accent)]">MindReset Challenge</span> è il protocollo per loop {profile.area === "relational" ? "relazionali-identitari" : "performativi-energetici"}
+          </h2>
+          <p className="text-[1rem] md:text-[1.0625rem] text-[var(--ink-secondary)] leading-relaxed text-center mb-5">
+            Non lavora su mindset o pensiero positivo. Agisce direttamente sulla <strong className="text-[var(--ink-primary)]">manifestazione fisica del loop</strong> con esercizi corporei concreti, 15 minuti al giorno per 7 giorni.
+          </p>
+          <ul className="flex flex-col gap-2.5 max-w-xl mx-auto">
+            {(profile.area === "relational"
+              ? [
+                  "Neutralizza la reattività al trigger relazionale (giudizio, distanza, conflitto) prima che diventi pensiero",
+                  "Niente “lasciar andare” né “perdonare”: agisce a monte, sulla risposta corporea",
+                  "7 esercizi pratici, uno al giorno. Niente journaling, niente meditazione",
+                ]
+              : [
+                  "Sblocca il freno corporeo che parte prima dell’azione (stallo, procrastinazione, autosabotaggio)",
+                  "Niente disciplina né motivazione: lavora sul sistema nervoso che frena prima della testa",
+                  "7 esercizi pratici, uno al giorno. Niente hacking di produttività",
+                ]
+            ).map((b, i) => (
+              <li key={i} className="flex items-start gap-3 text-[var(--ink-secondary)] text-[0.9375rem] md:text-base leading-relaxed">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="mt-1 shrink-0" aria-hidden="true">
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+                <span>{b}</span>
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* Mini-CTA inline — sempre visibile (mobile + desktop). Sticky mobile si nasconde quando l'offer block è in viewport */}
