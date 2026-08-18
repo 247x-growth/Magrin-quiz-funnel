@@ -285,81 +285,60 @@ export const RESULT_PROFILES: Record<ProblemArea, ResultProfile> = {
     ],
     testimonials: [
       {
-        name: "Donatella",
-        context: "23 anni di tecniche interiori, dolore amoroso",
+        name: "Michele",
+        context: "Pilota di elicotteri e perdita della madre",
         quote:
-          "Per me amore era uguale a sofferenza e questo ha condizionato tutta la mia vita di relazione.",
-        youtubeId: "JeCx6KBp3AM",
-        articleUrl: "https://andreamagrin.com/blog-caso-studio-donatella",
+          "Durante i giorni del funerale di mia madre ho capito che i pensieri erano sempre nel passato o nel futuro.",
+        youtubeId: "BubpbPIFIPs",
+        articleUrl: "https://andreamagrin.com/blog-caso-studio-michele",
+      },
+      {
+        name: "Ilaria",
+        context: "62 anni, terapista; lutto, separazione e casa persa",
+        quote:
+          "Quando ho incontrato il Metodo era il momento peggiore della mia vita. Avevo perso mia madre, mi ero separata, avevo perso il mio cane e anche la mia casa.",
+        youtubeId: "IMVr3GjorqM",
+        articleUrl: "https://andreamagrin.com/blog-caso-studio-ilaria",
+      },
+      {
+        name: "Denisa",
+        context: "Depressione post partum dopo la nascita del figlio",
+        quote:
+          "Non provavo più gioia, non provavo più amore, non provavo più niente. Dentro di me c’erano queste sensazioni, ma mi sentivo sbagliata nei suoi confronti.",
+        youtubeId: "L3_s1rXdyJg",
+        articleUrl: "https://andreamagrin.com/blog-caso-studio-denisa",
       },
       {
         name: "Nicolas",
-        context: "22 anni, autostima e identità",
+        context: "22 anni, studente; autostima e paura dello specchio",
         quote:
-          "A 22 anni avevo il terrore di guardarmi nello specchio. Sono arrivato a toccare il fondo.",
+          "Avevo il terrore di vedermi allo specchio. Pensavo che se una persona mi faceva un complimento era perché aveva un tornaconto e stava cercando di rubarmi qualcosa.",
         youtubeId: "YW9unUPg2lc",
         articleUrl: "https://andreamagrin.com/blog-caso-studio-nicolas",
       },
       {
-        name: "Sandra",
-        context: "Relazioni familiari, ruoli imposti",
-        quote: "Ero costretta a casa da mia suocera sette giorni su sette.",
-        youtubeId: "aALiBxOxQc0",
-        articleUrl: "https://andreamagrin.com/blog-caso-studio-sandra",
-      },
-      {
-        name: "Claudia R",
-        context: "Relazione tossica, manipolazione",
+        name: "Claudia",
+        context: "Avvocata, ansia e relazioni familiari",
         quote:
-          "Ero una persona che aveva bisogno della dose di stare male, qualsiasi cosa questa persona mi facesse a me andava bene.",
-        youtubeId: "opHySyjj3Wg",
-        articleUrl: "https://andreamagrin.com/blog-caso-studio-claudia-r",
+          "Facevo finta che andasse tutto bene. In realtà non era così, mi svegliavo la mattina con questo senso di angoscia.",
+        youtubeId: "-U1Af4A2X5U",
+        articleUrl: "https://andreamagrin.com/blog-caso-studio-claudia-322985",
       },
       {
-        name: "Alessandra",
-        context: "40 anni di dolore relazionale, perdono",
+        name: "Marco",
+        context: "Disturbi mandibolari; India; cerca senso da cinquant’anni",
         quote:
-          "Fino a quel momento ero riuscita a rimanere a galla, tra sali, scendi, poi mi è crollato il mondo addosso.",
-        youtubeId: "CO1NhYCU6RE",
-        articleUrl: "https://andreamagrin.com/blog-caso-studio-alessandra",
+          "Non avevo gli strumenti e questa cosa la vivevo come una sofferenza, come una grande mancanza di risposte.",
+        youtubeId: "4u260uSxRX8",
+        articleUrl: "https://andreamagrin.com/blog-caso-studio-marco",
       },
       {
-        name: "Enrico",
-        context: "23 anni, paura della vita e dell'altro",
+        name: "Franca",
+        context: "Reiki e tensioni con marito, madre e sorella",
         quote:
-          "Avevo paura di fare tutto, ordinare al bar, chiedere a una ragazza di uscire. Pensavo di essere rotto.",
-        youtubeId: "98fkjchXmNI",
-        articleUrl: "https://andreamagrin.com/blog-caso-studio-enrico",
-      },
-      {
-        name: "Ileana",
-        context: "Rapporto malsano, dipendenza affettiva",
-        quote: "Ero succube di un rapporto malsano e il dolore decideva per me e per la mia vita.",
-        youtubeId: "mNqPt2EKGRY",
-        articleUrl: "https://andreamagrin.com/blog-caso-studio-ileana",
-      },
-      {
-        name: "Tamara",
-        context: "Traumi dell'infanzia, 40 anni di dolore",
-        quote: "È stata un'infanzia che mi ha segnata e non trovavo una via d'uscita. Sono crollata.",
-        youtubeId: "LzKCUPJQEFM",
-        articleUrl: "https://andreamagrin.com/blog-caso-studio-tamara",
-      },
-      {
-        name: "Noemi",
-        context: "Cantante, vergogna e approvazione altrui",
-        quote:
-          "Non mi era mai stato insegnato a mettermi al primo posto. Mi vergognavo. Vivevo per l'approvazione altrui.",
-        youtubeId: "1nx2_gvJ1hc",
-        articleUrl: "https://andreamagrin.com/blog-caso-studio-noemi",
-      },
-      {
-        name: "Mariangela",
-        context: "Voleva cambiare il mondo, non vedeva i suoi limiti",
-        quote:
-          "Mai avrei pensato che la soluzione sarebbe passata per il corpo. Se hai un sogno il Metodo te lo ingrandisce ancora di più.",
-        youtubeId: "8gBSPq8HGxU",
-        articleUrl: "https://andreamagrin.com/blog-caso-studio-mariangela",
+          "Mi mancava sempre qualcosa che dicevo, ma poi non mi spiegano, ma non mi dicono, ma perché non arrivo?",
+        youtubeId: "hcGYc-XLoTk",
+        articleUrl: "https://andreamagrin.com/blog-caso-studio-franca-2",
       },
     ],
   },
@@ -383,59 +362,28 @@ export const RESULT_PROFILES: Record<ProblemArea, ResultProfile> = {
     ],
     testimonials: [
       {
-        name: "Claudia",
-        context: "Interior designer, 48 anni, lavoro e autonomia",
+        name: "Licia",
+        context: "Comunità per minori, burocrazia e tempo quasi zero",
         quote:
-          "Ero disoccupata dal 2018, senza sapere quale fosse la mia strada, dipendevo dalla mia famiglia. Mi sentivo un peso e senza libertà.",
-        youtubeId: "AffvOzuPvbg",
-        articleUrl: "https://andreamagrin.com/blog-caso-studio-claudia",
-      },
-      {
-        name: "Elena C",
-        context: "Blocco economico → abbondanza",
-        quote: "In tre settimane ho trovato i soldi che non avevo. E non mi sono più fermata.",
-        youtubeId: "BMHLtjiraM4",
-        articleUrl: "https://andreamagrin.com/blog-caso-studio-elena",
+          "Vivo in una comunità per minori, vivo dove lavoro e lavoro dove vivo quindi ho tempo quasi zero anche se faccio quello che mi piace.",
+        youtubeId: "ibUO6yryvp0",
+        articleUrl: "https://andreamagrin.com/blog-caso-studio-licia",
       },
       {
         name: "Laura",
-        context: "Rabbia cronica, svolta imprenditoriale",
+        context: "Traduttrice e copywriter, pensieri incontrollati",
         quote:
-          "Per me era normale vivere arrabbiata. Pensavo di non funzionare più, perché non sentivo le sensazioni.",
-        youtubeId: "bCfsks8mNNI",
-        articleUrl: "https://andreamagrin.com/blog-caso-studio-laura",
+          "La cosa più difficile prima di conoscere il Metodo era riuscire a fare stare tutti i pensieri che avevo nella testa in ordine.",
+        youtubeId: "lPe-IC1orzk",
+        articleUrl: "https://andreamagrin.com/blog-caso-studio-laura-g",
       },
       {
-        name: "Simona S",
-        context: "Imprenditrice internazionale, lutti e blocchi",
+        name: "Donato",
+        context: "Dodici anni tra The Secret e pensiero positivo",
         quote:
-          "Meditavo da anni, ma il dolore non spariva. Mi domandavo come mai la vita mi rispondesse in questo modo.",
-        youtubeId: "bZ0Rtnfokiw",
-        articleUrl: "https://andreamagrin.com/blog-caso-studio-simona",
-      },
-      {
-        name: "Monica",
-        context: "Operatrice 118, stress e ansia da lavoro",
-        quote:
-          "Caos mentale e ansia costante. Sono andata avanti più di 10 anni e non ho mai trovato quello che cercavo.",
-        youtubeId: "TtpPPzpptaw",
-        articleUrl: "https://andreamagrin.com/blog-caso-studio-monica",
-      },
-      {
-        name: "Franca",
-        context: "Ansia che svuotava il lavoro",
-        quote:
-          "Stavo rinunciando al mio lavoro con i ragazzi. Pensavo che eliminandoli l'ansia sarebbe sparita. Ma quella ce l'hai dentro.",
-        youtubeId: "nAxvAcghNSQ",
-        articleUrl: "https://andreamagrin.com/blog-caso-studio-franca",
-      },
-      {
-        name: "Antonella",
-        context: "Traumi infanzia + problemi finanziari",
-        quote:
-          "Il mio vissuto ha creato le basi per infiniti disastri, è meglio non ricordare l'Antonella di prima.",
-        youtubeId: "w-hXCpJhbW8",
-        articleUrl: "https://andreamagrin.com/blog-caso-studio-antonella",
+          "Mi sono reso conto che da soli si fa fatica, molta fatica.",
+        youtubeId: "6I1EEqRaToI",
+        articleUrl: "https://andreamagrin.com/blog-caso-studio-donato",
       },
     ],
   },
